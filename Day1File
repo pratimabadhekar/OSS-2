@@ -1,0 +1,93 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DelegateDemo
+{
+    public delegate void Operation();
+    public delegate void Handler(String name);
+    public delegate int ArithmaticOperation(int a, int b);
+
+    public class MathEngine
+    {
+        public int Addition(int a,int b)
+        {
+            return a + b;
+        }
+        public int Subtraction(int a, int b)
+        {
+            return a - b;
+        }
+        public int Multiplication(int a, int b)
+        {
+            return a + b;
+        }
+        public int Division(int a, int b)
+        {
+            return a + b;
+        }
+    }
+    class Program
+    {
+        public static void show()
+        {
+            Console.WriteLine("Showing Information");
+        }
+        public static void Display()
+        {
+            Console.WriteLine("Display Information");
+        }
+
+        public static void GetRequest(String request)
+        {
+            Console.WriteLine("In Get Request Method");
+        }
+        public static void PostRequest(String request)
+        {
+            Console.WriteLine("In Post Request Method");
+        }
+
+        static void Main(string[] args)
+        {
+            show();
+
+            Operation op1 = new Operation(show);
+            op1.Invoke();
+
+            Handler h1 = new Handler(GetRequest);
+            Handler h2 = new Handler(PostRequest);
+           // h1("customer");
+
+            Handler master = h1;
+            master += h2;
+            master("aaquib");
+
+            Console.WriteLine("After deleting");
+            master -= h2;
+            master("aquib");
+
+            MathEngine engine = new MathEngine();
+
+            ArithmaticOperation add = new ArithmaticOperation(engine.Addition);
+            ArithmaticOperation sub = new ArithmaticOperation(engine.Subtraction);
+            ArithmaticOperation mult = new ArithmaticOperation(engine.Multiplication);
+            ArithmaticOperation div = new ArithmaticOperation(engine.Division);
+
+            ArithmaticOperation cal = null;
+            cal = sub;
+            cal += add;
+            cal += mult;
+            cal += div;
+
+            int num1 = 12;
+            int num2 = 6;
+
+            int result = cal(num1, num2);
+            Console.WriteLine("Result "+result);
+
+            Console.ReadLine();
+        }
+    }
+}
